@@ -1,0 +1,2 @@
+# CollectionView
+这里我在iOS中使用三种不同的方式实现UICollectionView，也就是一种瀑布流视图。分别使用storyboard、nib和纯代码的方式来实现。
