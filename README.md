@@ -6,6 +6,7 @@
 &emsp;&emsp;&nbsp;我在第四个例子中实现了使用UICollectionView进行动态增加一个Cell或者Section，主要使用了Lazy Load懒加载进行。并在插入一个Section的时候动态编辑Header头部视图。
 ##3.实现效果
 ![Alt text](https://github.com/chenyufeng1991/CollectionView/raw/master/Screenshots/1.png)
+</br>
 &emsp;&emsp;&nbsp;动态增加Cell和Section的效果如下：</br>
 ![Alt text](https://github.com/chenyufeng1991/CollectionView/raw/master/Screenshots/2.png)
 </br>
