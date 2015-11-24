@@ -19,6 +19,7 @@
 		71058A1A1BE2FECA00D13C07 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71058A181BE2FECA00D13C07 /* SecondViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		71058A1D1BE3012600D13C07 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71058A1C1BE3012600D13C07 /* CollectionViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		71058A6A1BE38B7800D13C07 /* CollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71058A691BE38B7800D13C07 /* CollectionReusableView.m */; settings = {ASSET_TAGS = (); }; };
+		71DD7FFB1C043BD700A99EEF /* CollectionFirstSectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DD7FFA1C043BD700A99EEF /* CollectionFirstSectionReusableView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		71058A1C1BE3012600D13C07 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		71058A681BE38B7800D13C07 /* CollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionReusableView.h; sourceTree = "<group>"; };
 		71058A691BE38B7800D13C07 /* CollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableView.m; sourceTree = "<group>"; };
+		71DD7FF91C043BD700A99EEF /* CollectionFirstSectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionFirstSectionReusableView.h; sourceTree = "<group>"; };
+		71DD7FFA1C043BD700A99EEF /* CollectionFirstSectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionFirstSectionReusableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +124,8 @@
 				71058A181BE2FECA00D13C07 /* SecondViewController.xib */,
 				71058A1B1BE3012600D13C07 /* CollectionViewCell.h */,
 				71058A1C1BE3012600D13C07 /* CollectionViewCell.m */,
+				71DD7FF91C043BD700A99EEF /* CollectionFirstSectionReusableView.h */,
+				71DD7FFA1C043BD700A99EEF /* CollectionFirstSectionReusableView.m */,
 				71058A681BE38B7800D13C07 /* CollectionReusableView.h */,
 				71058A691BE38B7800D13C07 /* CollectionReusableView.m */,
 				710589EC1BE2FE5B00D13C07 /* Main.storyboard */,
@@ -295,6 +300,7 @@
 				71058A191BE2FECA00D13C07 /* SecondViewController.m in Sources */,
 				71058A1D1BE3012600D13C07 /* CollectionViewCell.m in Sources */,
 				710589EB1BE2FE5B00D13C07 /* ViewController.m in Sources */,
+				71DD7FFB1C043BD700A99EEF /* CollectionFirstSectionReusableView.m in Sources */,
 				710589E81BE2FE5B00D13C07 /* AppDelegate.m in Sources */,
 				710589E51BE2FE5B00D13C07 /* main.m in Sources */,
 				71058A6A1BE38B7800D13C07 /* CollectionReusableView.m in Sources */,

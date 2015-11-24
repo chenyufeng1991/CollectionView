@@ -11,8 +11,10 @@
 #import "CollectionViewCell.h"
 #import "AppDelegate.h"
 #import "CollectionReusableView.h"
+#import "CollectionFirstSectionReusableView.h"
 
-#define UISCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
 
 @interface SecondViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -33,11 +35,18 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  
+  
+  
   //进行CollectionView和Cell的绑定
   [self.collectionView registerClass:[CollectionViewCell class]  forCellWithReuseIdentifier:@"CollectionCell"];
   self.collectionView.backgroundColor = [UIColor whiteColor];
   
   //加入头部视图；
+  //第一个Header；
+  [self.collectionView registerClass:[CollectionFirstSectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"FirstHeader"];
+  
+  //第二个以后的Header；
   [self.collectionView registerClass:[CollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header"];
   
 }
@@ -68,23 +77,37 @@
 //加载头部标题；
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
   
-  CollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:indexPath];
   
-  //就打印出当前section的值；
-  view.title.text = [self.headerArray objectAtIndex:indexPath.section];
+  UICollectionReusableView *view;
+  
+  if (indexPath.section == 0) {
+    CollectionFirstSectionReusableView *firstView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"FirstHeader" forIndexPath:indexPath];
+    firstView.title.text = [self.headerArray objectAtIndex:indexPath.section];
+    view = firstView;
+    
+  } else {
+    CollectionReusableView *laterView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:indexPath];
+    laterView.title.text = [self.headerArray objectAtIndex:indexPath.section];
+    view = laterView;
+  }
   
   return view;
-  
 }
 
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
   
-  return CGSizeMake((UISCREEN_WIDTH - 40) / 3, (UISCREEN_WIDTH - 40) / 3);
+  return CGSizeMake((SCREEN_WIDTH - 40) / 3, (SCREEN_WIDTH - 40) / 3);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+  
+  
+  
+  if (section == 0) {
+    return UIEdgeInsetsMake(130,20,0,20);
+  }
   
   return UIEdgeInsetsMake(0,20,0,20);
 }
@@ -142,7 +165,7 @@
 }
 
 
-#pragma mark - UICollectionViewDelegat
+#pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
   
   if ((indexPath.row == ([[self.dataArray objectAtIndex:indexPath.section] count] - 1))) {

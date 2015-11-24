@@ -8,7 +8,8 @@
 
 #import "CollectionViewCell.h"
 
-#define UISCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
 
 @implementation CollectionViewCell
 
@@ -19,12 +20,12 @@
     
 
     //这里需要初始化ImageView；
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (UISCREEN_WIDTH - 40) / 3, (UISCREEN_WIDTH - 40) / 3)];
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (SCREEN_WIDTH - 40) / 3, (SCREEN_WIDTH - 40) / 3)];
     [self addSubview:self.imageView];
     [self.imageView setUserInteractionEnabled:true];
     
     
-    self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (UISCREEN_WIDTH - 40) / 3, (UISCREEN_WIDTH - 40) / 3, 20)];
+    self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (SCREEN_WIDTH - 40) / 3, (SCREEN_WIDTH - 40) / 3, 20)];
     self.descLabel.textAlignment = NSTextAlignmentCenter;
     
     [self addSubview:self.descLabel];
