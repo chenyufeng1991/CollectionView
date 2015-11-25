@@ -21,13 +21,16 @@
 
     //这里需要初始化ImageView；
     self.imageButton = [[UIButton alloc] initWithFrame:CGRectMake((self.bounds.size.width - 32) / 2, (self.bounds.size.width - 32) / 2, 32, 32)];
+    self.imageButton.tag = 100;
+    
     
     self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.bounds.size.width - 100) / 2, (self.bounds.size.width - 32) / 2 + 30, 100, 20)];
     self.descLabel.textAlignment = NSTextAlignmentCenter;
     self.descLabel.font=[UIFont systemFontOfSize:10];
+    self.descLabel.tag = 101;
     
-    [self addSubview:self.imageButton];
-    [self addSubview:self.descLabel];
+    [self.contentView addSubview:self.imageButton];
+    [self.contentView addSubview:self.descLabel];
     
     
   }
