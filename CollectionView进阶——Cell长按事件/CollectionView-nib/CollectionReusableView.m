@@ -19,7 +19,7 @@
   self = [super initWithFrame:frame];
   if (self) {
     
-    self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, 20)];
+    self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT / 20, SCREEN_WIDTH, SCREEN_HEIGHT / 20)];
     self.title.textColor = [UIColor blackColor];
     self.title.textAlignment = NSTextAlignmentCenter;
     

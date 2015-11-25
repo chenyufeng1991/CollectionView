@@ -40,8 +40,8 @@
   
   
   //***动态设置collectionView/ScrollView高度；
-  self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height + 200);
-  self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.collectionView.frame.size.height + 200);
+  self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height + SCREEN_HEIGHT / 2);
+  self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.collectionView.frame.size.height + SCREEN_HEIGHT / 2);
   self.addButtonPressed.frame = CGRectMake(0, self.collectionView.frame.size.height + 150, SCREEN_WIDTH, 30);
   
   //进行CollectionView和Cell的绑定
@@ -155,7 +155,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
   
-  return CGSizeMake(self.collectionView.frame.size.width, 40);
+  return CGSizeMake(self.collectionView.frame.size.width, SCREEN_HEIGHT / 10);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
@@ -286,7 +286,7 @@
     
     
     //*** 重新设置collectionView的高度；
-    self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height + (SCREEN_WIDTH / 3) * 2 + 40 );
+    self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height + (SCREEN_WIDTH / 3) * 2 + SCREEN_HEIGHT / 10 );
     //重新设置scrollView的高度,这个是正确的；
     self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.collectionView.frame.size.height + (SCREEN_WIDTH / 3) * 2);
     //重新设置button的位置；
