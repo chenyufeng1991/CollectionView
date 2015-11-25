@@ -38,7 +38,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  
   //最外面嵌套一个ScrollView；
   [self.scrollView setScrollEnabled:true];
   
@@ -75,7 +74,7 @@
   //  UIButton *deviceImageButton = (UIButton*)[cell viewWithTag:100];
   //  [deviceImageButton addTarget:self action:@selector(deviceButtonPressed:row:) forControlEvents:UIControlEventTouchUpInside];
   
-  
+  //找到每一个按钮；
   UIButton *deviceImageButton = cell.imageButton;
   [deviceImageButton addTarget:self action:@selector(deviceButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   
