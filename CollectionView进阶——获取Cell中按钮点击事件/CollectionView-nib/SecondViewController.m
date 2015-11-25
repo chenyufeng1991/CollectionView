@@ -11,14 +11,17 @@
 #import "CollectionViewCell.h"
 #import "AppDelegate.h"
 #import "CollectionReusableView.h"
-#import "CollectionFirstSectionReusableView.h"
 
 #define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 #define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
 
-@interface SecondViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface SecondViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *image;
+@property (weak, nonatomic) IBOutlet UIButton *addButtonPressed;
+
 
 //开始使用二维数组进行数据结构设计；
 @property (nonatomic, strong)NSArray *defaultArray;//有defaultArray()方法；
@@ -36,19 +39,21 @@
   [super viewDidLoad];
   
   
+  //最外面嵌套一个ScrollView；
+  [self.scrollView setScrollEnabled:true];
   
+  
+  //***动态设置collectionView/ScrollView高度；
+  self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height + 200);
+  self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.collectionView.frame.size.height + 200);
+  self.addButtonPressed.frame = CGRectMake(0, self.collectionView.frame.size.height + 150, SCREEN_WIDTH, 30);
   
   //进行CollectionView和Cell的绑定
   [self.collectionView registerClass:[CollectionViewCell class]  forCellWithReuseIdentifier:@"CollectionCell"];
   self.collectionView.backgroundColor = [UIColor whiteColor];
   
-  //加入头部视图；
-  //第一个Header；
-  [self.collectionView registerClass:[CollectionFirstSectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"FirstHeader"];
-  
   //第二个以后的Header；
   [self.collectionView registerClass:[CollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header"];
-  
 }
 
 
@@ -66,6 +71,14 @@
   //  cell.imageView.image = [UIImage imageNamed:[[self.dataArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
   
   
+  //设置设备图片按钮的点击事件；
+  //  UIButton *deviceImageButton = (UIButton*)[cell viewWithTag:100];
+  //  [deviceImageButton addTarget:self action:@selector(deviceButtonPressed:row:) forControlEvents:UIControlEventTouchUpInside];
+  
+  
+  UIButton *deviceImageButton = cell.imageButton;
+  [deviceImageButton addTarget:self action:@selector(deviceButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  
   //给每一个cell加边框；
   cell.layer.borderColor = [UIColor grayColor].CGColor;
   cell.layer.borderWidth = 0.3;
@@ -73,7 +86,7 @@
   
   
   [cell.imageButton setBackgroundImage:[UIImage imageNamed:@"0"] forState:UIControlStateNormal];
-  cell.descLabel.text = @"灯泡";
+  cell.descLabel.text = @"文本";
   
   return cell;
   
@@ -89,18 +102,9 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
   
   
-  UICollectionReusableView *view = [[UICollectionReusableView alloc] init];
   
-  if (indexPath.section == 0) {
-    CollectionFirstSectionReusableView *firstView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"FirstHeader" forIndexPath:indexPath];
-    firstView.title.text = [self.headerArray objectAtIndex:indexPath.section];
-    view = firstView;
-    
-  } else {
-    CollectionReusableView *laterView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:indexPath];
-    laterView.title.text = [self.headerArray objectAtIndex:indexPath.section];
-    view = laterView;
-  }
+  CollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:indexPath];
+  view.title.text = [self.headerArray objectAtIndex:indexPath.section];
   
   return view;
 }
@@ -113,10 +117,6 @@
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-  
-  if (section == 0) {
-    return UIEdgeInsetsMake(140,0,0,0);
-  }
   
   return UIEdgeInsetsMake(0,0,0,0);
 }
@@ -182,17 +182,49 @@
     
     NSString *tempImageName = @"1";
     
-    //这里需要在最后一个位置增加设备；
+    //每当增加一个cell同时增加一行的时候，CollectionView和ScrollView高度和位置要发生变化；button的位置要发生变化；
+    if (indexPath.row % 3 == 2 && indexPath.row != 2) {
+      
+      //***重新设置collectionView的高度；
+      self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height+ (SCREEN_WIDTH / 3) );
+      //重新设置scrollView的高度
+      self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.collectionView.frame.size.height + (SCREEN_WIDTH / 3) * 2);
+      //重新设置button的位置；
+      self.addButtonPressed.frame = CGRectMake(0, self.collectionView.frame.size.height + 150, SCREEN_WIDTH, 30);
+      
+    }else{
+      //不用更新UI；
+    }
     
+    
+    //这里需要在最后一个位置增加设备；
     [[self.dataArray objectAtIndex:indexPath.section] insertObject:tempImageName atIndex:[[self.dataArray objectAtIndex:indexPath.section] count]-1];
     
     [self.collectionView reloadData];
     
   }else{
+    
     NSLog(@"第%ld个section,点击图片%ld",indexPath.section,indexPath.row);
   }
   
 }
+
+#pragma mark - 点击按钮操作
+- (void)deviceButtonPressed:(id)sender{
+
+  
+  UIView *v = [sender superview];//获取父类view
+  CollectionViewCell *cell = (CollectionViewCell *)[v superview];//获取cell
+  
+  NSIndexPath *indexpath = [self.collectionView indexPathForCell:cell];//获取cell对应的indexpath;
+  
+  NSLog(@"设备图片按钮被点击:%ld        %ld",(long)indexpath.section,(long)indexpath.row);
+  
+}
+
+
+
+
 
 #pragma mark - 添加环境的按钮
 - (IBAction)addEnvirnmentClick:(id)sender {
@@ -219,6 +251,16 @@
     
     //此时更新界面；
     [self.collectionView reloadData];
+    
+    
+    //*** 重新设置collectionView的高度；
+    self.collectionView.frame = CGRectMake(0, 150, SCREEN_WIDTH, self.collectionView.frame.size.height + (SCREEN_WIDTH / 3) * 2 + 40 );
+    //重新设置scrollView的高度,这个是正确的；
+    self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.collectionView.frame.size.height + (SCREEN_WIDTH / 3) * 2);
+    //重新设置button的位置；
+    self.addButtonPressed.frame = CGRectMake(0, self.collectionView.frame.size.height + 150 , SCREEN_WIDTH, 30);
+    
+    
     
     NSLog(@"你输入的文本%@",envirnmentNameTextField.text);
     
