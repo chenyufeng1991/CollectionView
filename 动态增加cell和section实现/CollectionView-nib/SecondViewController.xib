@@ -2,11 +2,13 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecondViewController">
             <connections>
                 <outlet property="collectionView" destination="EBS-RO-kYK" id="12C-Ya-bjc"/>
+                <outlet property="editButton" destination="Rdi-ur-yza" id="0dp-T8-ybT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="EBS-RO-kYK">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="542"/>
+                    <rect key="frame" x="0.0" y="44" width="600" height="498"/>
                     <animations/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LJp-DV-Bah">
                         <size key="itemSize" width="50" height="50"/>
@@ -37,16 +39,27 @@
                         <action selector="addEnvirnmentClick:" destination="-1" eventType="touchUpInside" id="iry-wg-8sT"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rdi-ur-yza">
+                    <rect key="frame" x="516" y="28" width="40" height="36"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <state key="normal" title="编辑"/>
+                    <connections>
+                        <action selector="editButtonPressed:" destination="-1" eventType="touchUpInside" id="mlR-uO-nD5"/>
+                    </connections>
+                </button>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="aUT-zJ-ZJ5" secondAttribute="trailing" id="4CT-GX-puq"/>
                 <constraint firstItem="aUT-zJ-ZJ5" firstAttribute="top" secondItem="EBS-RO-kYK" secondAttribute="bottom" constant="15" id="9zY-nE-LI9"/>
-                <constraint firstItem="EBS-RO-kYK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ckn-0t-LV3"/>
+                <constraint firstItem="EBS-RO-kYK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="44" id="Ckn-0t-LV3"/>
                 <constraint firstAttribute="bottom" secondItem="EBS-RO-kYK" secondAttribute="bottom" constant="58" id="DX6-8D-nYS"/>
                 <constraint firstItem="EBS-RO-kYK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EUx-yF-TYD"/>
+                <constraint firstAttribute="trailing" secondItem="Rdi-ur-yza" secondAttribute="trailing" constant="44" id="Ve1-T8-PF7"/>
                 <constraint firstAttribute="trailing" secondItem="EBS-RO-kYK" secondAttribute="trailing" id="mEF-T0-jMS"/>
+                <constraint firstItem="Rdi-ur-yza" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="20" id="o1x-G9-plq"/>
                 <constraint firstItem="aUT-zJ-ZJ5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uvA-Di-r7d"/>
             </constraints>
         </view>

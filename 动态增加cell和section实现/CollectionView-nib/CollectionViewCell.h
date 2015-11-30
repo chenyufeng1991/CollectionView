@@ -13,6 +13,8 @@
 @property(strong,nonatomic) UIImageView *imageView;
 @property(strong,nonatomic) UILabel *descLabel;
 
+
+@property(nonatomic,strong)UIButton *deleteButton;
 @end
 
 
