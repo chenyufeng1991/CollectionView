@@ -13,6 +13,7 @@
 #import "CollectionReusableView.h"
 
 #import "SectionModel.h"
+#import "CellModel.h"
 
 #define UISCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 
@@ -28,8 +29,6 @@ NS_ENUM(NSInteger,CellState){
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-
-
 @property(nonatomic,assign) enum CellState;
 
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
@@ -37,12 +36,13 @@ NS_ENUM(NSInteger,CellState){
 //下面数组用来存放头部标题；
 @property(strong,nonatomic) NSMutableArray *headerArray;
 
-@property (nonatomic, strong)NSMutableArray *dataSectionArray;//里面存放section对象，模型由SectionModel定义；
-//这是某一个Section的模型；
-@property(nonatomic,strong)SectionModel *section;
+@property (nonatomic,strong) SectionModel *section;
+@property (nonatomic,strong) NSMutableArray *dataSectionArray;//里面存放section对象，模型由SectionModel定义；
+@property (nonatomic,strong) NSMutableArray *dataCellArray;
 
+@property(nonatomic,strong) NSMutableArray *cellImageArr;
+@property(nonatomic,strong) NSMutableArray *cellDescArr;
 
-//这个是
 
 @end
 
@@ -63,15 +63,12 @@ NS_ENUM(NSInteger,CellState){
   
 }
 
-
-
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
   
-  SectionModel *sec = [[SectionModel alloc] init];
-  sec = self.dataSectionArray[section];
+  SectionModel *sec = [self.dataSectionArray objectAtIndex:section];
   
-  return  sec.cellArray.count ;
+  return  sec.cellArray.count;
 }
 
 
@@ -79,11 +76,17 @@ NS_ENUM(NSInteger,CellState){
   
   CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionCell" forIndexPath:indexPath];
   
-  SectionModel *sec = self.dataSectionArray[indexPath.section];
+//  SectionModel *sec = self.dataSectionArray[indexPath.section];
+//  CellModel *cel = sec.cellArray[indexPath.row];
   
-  //可以从这里理解为数据是从模型中取出来的；
-  cell.imageView.image = [UIImage imageNamed:[sec.cellArray objectAtIndex:indexPath.row]];
   
+  SectionModel *sec = [self.dataSectionArray objectAtIndex:indexPath.section];
+  CellModel *cel = [sec.cellArray objectAtIndex:indexPath.row];
+
+  //要用的数据都从模型中取出来；
+  cell.imageView.image = [UIImage imageNamed:cel.cellImage];
+  cell.descLabel.text = cel.cellDesc;
+
   
   //设置close按钮
   // 点击编辑按钮触发事件
@@ -94,7 +97,7 @@ NS_ENUM(NSInteger,CellState){
   }
   else{
     //编辑情况下：
-    SectionModel *section=self.dataSectionArray[indexPath.section];
+    SectionModel *section = self.dataSectionArray[indexPath.section];
     if (indexPath.row != section.cellArray.count - 1)
     {
       cell.deleteButton.hidden = NO;
@@ -105,8 +108,7 @@ NS_ENUM(NSInteger,CellState){
       cell.deleteButton.hidden = YES;
     }
   }
-  
-    [cell.deleteButton addTarget:self action:@selector(deleteCellButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  [cell.deleteButton addTarget:self action:@selector(deleteCellButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   
   return cell;
   
@@ -164,16 +166,27 @@ NS_ENUM(NSInteger,CellState){
 - (NSMutableArray *)dataSectionArray{
   if (!_dataSectionArray){
     
-    _dataSectionArray = [[NSMutableArray alloc] initWithCapacity:2];
+    NSLog(@"1111111111111111");
+    
+    _dataSectionArray = [[NSMutableArray alloc] initWithCapacity:2];//1个；
     
     for (int i = 0; i < 2; i++) {
-      NSMutableArray *firstRow = [[NSMutableArray alloc] initWithObjects:@"0",@"1",@"2",@"3",@"4",@"5",nil];
+      _dataCellArray = [[NSMutableArray alloc] initWithCapacity:6];//2个；
       
-      SectionModel *model = [[SectionModel alloc] init];
-      model.cellArray = firstRow;
+      for (int j = 0; j < 6; j++) {
+        CellModel *cellModel = [[CellModel alloc] init];
+        cellModel.cellImage = self.cellImageArr[j];
+        cellModel.cellDesc = self.cellDescArr[j];
+        
+        [_dataCellArray addObject:cellModel];
+      }//for;
       
-      [_dataSectionArray addObject:model];
-    }
+      SectionModel *sectionModel = [[SectionModel alloc] init];
+      sectionModel.sectionName = self.headerArray[i];
+      sectionModel.cellArray = _dataCellArray;
+      
+      [_dataSectionArray addObject:sectionModel];
+    }//for;
     
   }
   
@@ -190,20 +203,42 @@ NS_ENUM(NSInteger,CellState){
   return _headerArray;
 }
 
+- (NSMutableArray *)cellImageArr{
 
-#pragma mark - UICollectionViewDelegat
+  if (!_cellImageArr) {
+    self.cellImageArr = [[NSMutableArray alloc] initWithObjects:@"0",@"1",@"2",@"3",@"4",@"5",nil];
+  }
+  
+  return _cellImageArr;
+}
+
+- (NSMutableArray *)cellDescArr{
+
+  if (!_cellDescArr) {
+    self.cellDescArr = [[NSMutableArray alloc] initWithObjects:@"第0个",@"第1个",@"第2个",@"第3个",@"第4个",@"添加",nil];
+  }
+  
+  return _cellDescArr;
+}
+
+
+#pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
   
+  //取出是某一个section；
   SectionModel *sec = [self.dataSectionArray objectAtIndex:indexPath.section];
   
   if ((indexPath.row == sec.cellArray.count - 1)) {
-    NSLog(@"添加操作");
+    NSLog(@"点击最后一个cell，执行添加操作");
     
-    NSString *tempImageName = @"1";
     
-    //是要加到模型中去；
+    CellModel *cel = [[CellModel alloc] init];
+    cel.cellImage = @"1";
+    cel.cellDesc = @"再来一个";
+
+    self.dataCellArray = sec.cellArray;
     
-    [sec.cellArray insertObject:tempImageName atIndex:sec.cellArray.count - 1];
+    [self.dataCellArray insertObject:cel atIndex:self.dataCellArray.count - 1];
     
     [self.collectionView reloadData];
     
@@ -216,6 +251,18 @@ NS_ENUM(NSInteger,CellState){
 #pragma mark - 添加环境的按钮
 - (IBAction)addEnvirnmentClick:(id)sender {
   
+  self.dataCellArray = [[NSMutableArray alloc] init];
+  
+  for (int i = 0; i < 6; i++) {
+    
+    CellModel *cell = [[CellModel alloc] init];
+    cell.cellDesc = self.cellDescArr[i];
+    cell.cellImage = self.cellImageArr[i];
+    
+    [self.dataCellArray addObject:cell];
+    
+  }
+  
   [self popEnvirnmentNameDialog];
   
 }
@@ -223,22 +270,19 @@ NS_ENUM(NSInteger,CellState){
 #pragma mark - 弹出输入环境名称的提示框
 - (void)popEnvirnmentNameDialog{
   
-  NSMutableArray *addRow = [[NSMutableArray alloc] initWithObjects:@"0",@"1",@"2",@"3",@"4",@"5",nil];
-  
   UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入Section名称" preferredStyle:UIAlertControllerStyleAlert];
   //以下方法就可以实现在提示框中输入文本；
   [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
     UITextField *envirnmentNameTextField = alertController.textFields.firstObject;
     
     SectionModel *sec = [[SectionModel alloc] init];
-    sec.cellArray = addRow;
     sec.sectionName = envirnmentNameTextField.text;
-    
+    sec.cellArray = self.dataCellArray;
     [self.dataSectionArray addObject:sec];
+    
     
     [self.headerArray addObject:envirnmentNameTextField.text];
     
-    //此时更新界面；
     [self.collectionView reloadData];
     
     NSLog(@"你输入的文本%@",envirnmentNameTextField.text);

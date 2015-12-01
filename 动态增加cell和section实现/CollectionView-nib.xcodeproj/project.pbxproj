@@ -20,6 +20,7 @@
 		71058A1D1BE3012600D13C07 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71058A1C1BE3012600D13C07 /* CollectionViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		71058A6A1BE38B7800D13C07 /* CollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71058A691BE38B7800D13C07 /* CollectionReusableView.m */; settings = {ASSET_TAGS = (); }; };
 		712C52631C0C68B20014F9CB /* SectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 712C52621C0C68B20014F9CB /* SectionModel.m */; settings = {ASSET_TAGS = (); }; };
+		71A7988B1C0CAB81006F8D7B /* CellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A7988A1C0CAB81006F8D7B /* CellModel.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		71058A691BE38B7800D13C07 /* CollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableView.m; sourceTree = "<group>"; };
 		712C52611C0C68B20014F9CB /* SectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionModel.h; sourceTree = "<group>"; };
 		712C52621C0C68B20014F9CB /* SectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionModel.m; sourceTree = "<group>"; };
+		71A798891C0CAB81006F8D7B /* CellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellModel.h; sourceTree = "<group>"; };
+		71A7988A1C0CAB81006F8D7B /* CellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,22 +118,11 @@
 		710589E21BE2FE5B00D13C07 /* CollectionView-nib */ = {
 			isa = PBXGroup;
 			children = (
-				710589E61BE2FE5B00D13C07 /* AppDelegate.h */,
-				710589E71BE2FE5B00D13C07 /* AppDelegate.m */,
-				710589E91BE2FE5B00D13C07 /* ViewController.h */,
-				710589EA1BE2FE5B00D13C07 /* ViewController.m */,
-				71058A161BE2FECA00D13C07 /* SecondViewController.h */,
-				71058A171BE2FECA00D13C07 /* SecondViewController.m */,
-				71058A181BE2FECA00D13C07 /* SecondViewController.xib */,
-				71058A1B1BE3012600D13C07 /* CollectionViewCell.h */,
-				71058A1C1BE3012600D13C07 /* CollectionViewCell.m */,
-				71058A681BE38B7800D13C07 /* CollectionReusableView.h */,
-				71058A691BE38B7800D13C07 /* CollectionReusableView.m */,
-				712C52611C0C68B20014F9CB /* SectionModel.h */,
-				712C52621C0C68B20014F9CB /* SectionModel.m */,
-				710589EC1BE2FE5B00D13C07 /* Main.storyboard */,
+				71A798921C0D99D3006F8D7B /* Other */,
+				71A798911C0D999D006F8D7B /* Model */,
+				71A798901C0D9996006F8D7B /* Controller  */,
+				71A7988F1C0D998F006F8D7B /* View */,
 				710589EF1BE2FE5B00D13C07 /* Assets.xcassets */,
-				710589F11BE2FE5B00D13C07 /* LaunchScreen.storyboard */,
 				710589F41BE2FE5B00D13C07 /* Info.plist */,
 				710589E31BE2FE5B00D13C07 /* Supporting Files */,
 			);
@@ -161,6 +153,51 @@
 				71058A0A1BE2FE5B00D13C07 /* Info.plist */,
 			);
 			path = "CollectionView-nibUITests";
+			sourceTree = "<group>";
+		};
+		71A7988F1C0D998F006F8D7B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				71058A181BE2FECA00D13C07 /* SecondViewController.xib */,
+				710589EC1BE2FE5B00D13C07 /* Main.storyboard */,
+				710589F11BE2FE5B00D13C07 /* LaunchScreen.storyboard */,
+				71058A1B1BE3012600D13C07 /* CollectionViewCell.h */,
+				71058A1C1BE3012600D13C07 /* CollectionViewCell.m */,
+				71058A681BE38B7800D13C07 /* CollectionReusableView.h */,
+				71058A691BE38B7800D13C07 /* CollectionReusableView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		71A798901C0D9996006F8D7B /* Controller  */ = {
+			isa = PBXGroup;
+			children = (
+				710589E91BE2FE5B00D13C07 /* ViewController.h */,
+				710589EA1BE2FE5B00D13C07 /* ViewController.m */,
+				71058A161BE2FECA00D13C07 /* SecondViewController.h */,
+				71058A171BE2FECA00D13C07 /* SecondViewController.m */,
+			);
+			name = "Controller ";
+			sourceTree = "<group>";
+		};
+		71A798911C0D999D006F8D7B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				712C52611C0C68B20014F9CB /* SectionModel.h */,
+				712C52621C0C68B20014F9CB /* SectionModel.m */,
+				71A798891C0CAB81006F8D7B /* CellModel.h */,
+				71A7988A1C0CAB81006F8D7B /* CellModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		71A798921C0D99D3006F8D7B /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				710589E61BE2FE5B00D13C07 /* AppDelegate.h */,
+				710589E71BE2FE5B00D13C07 /* AppDelegate.m */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,6 +341,7 @@
 				712C52631C0C68B20014F9CB /* SectionModel.m in Sources */,
 				710589E51BE2FE5B00D13C07 /* main.m in Sources */,
 				71058A6A1BE38B7800D13C07 /* CollectionReusableView.m in Sources */,
+				71A7988B1C0CAB81006F8D7B /* CellModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,12 +20,13 @@
     
 
     //这里需要初始化ImageView；
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (UISCREEN_WIDTH - 40) / 3, (UISCREEN_WIDTH - 40) / 3)];
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width - (UISCREEN_WIDTH - 40) / 6 - 20, self.frame.size.width-(UISCREEN_WIDTH - 40) / 6 - 20, 40, 40)];
     [self.imageView setUserInteractionEnabled:true];
     
     
-    self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (UISCREEN_WIDTH - 40) / 3, (UISCREEN_WIDTH - 40) / 3, 20)];
+    self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.width - (UISCREEN_WIDTH - 40) / 6 + 20, (UISCREEN_WIDTH - 40) / 3, 20)];
     self.descLabel.textAlignment = NSTextAlignmentCenter;
+    self.descLabel.text = @"111";
     
     
     
@@ -34,6 +35,7 @@
     //先设置不可见；
     [self.deleteButton setHidden:true];
     
+    self.layer.borderWidth = 0.5;
     
     
     [self addSubview:self.imageView];
