@@ -10,7 +10,8 @@
 
 @interface SectionModel : NSObject
 
-//这是一个section内的数据；
+//定义Section头的名字；
 @property(nonatomic,copy) NSString *sectionName;
+//定义Section中的cell数组；
 @property(nonatomic,strong) NSMutableArray *cellArray;//这里存放的是section中的每一个cell；
 @end

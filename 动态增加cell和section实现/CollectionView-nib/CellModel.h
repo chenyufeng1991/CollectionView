@@ -10,7 +10,9 @@
 
 @interface CellModel : NSObject
 
+//定义cell中的图片；
 @property(nonatomic,strong) NSString *cellImage;
+//定义cell中的描述文字；
 @property(nonatomic,strong) NSString *cellDesc;
 
 @end

@@ -19,7 +19,10 @@
 
 NS_ENUM(NSInteger,CellState){
   
+  //右上角编辑按钮的两种状态；
+  //正常的状态，按钮显示“编辑”;
   NormalState,
+  //正在删除时候的状态，按钮显示“完成”；
   DeleteState
   
 };
@@ -76,36 +79,29 @@ NS_ENUM(NSInteger,CellState){
   
   CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionCell" forIndexPath:indexPath];
   
-//  SectionModel *sec = self.dataSectionArray[indexPath.section];
-//  CellModel *cel = sec.cellArray[indexPath.row];
-  
-  
+  //找到某一个具体的Section；
   SectionModel *sec = [self.dataSectionArray objectAtIndex:indexPath.section];
+  //找到Section中的cell数组中某个具体的cell；
   CellModel *cel = [sec.cellArray objectAtIndex:indexPath.row];
 
-  //要用的数据都从模型中取出来；
+  //取出数据；
   cell.imageView.image = [UIImage imageNamed:cel.cellImage];
   cell.descLabel.text = cel.cellDesc;
 
-  
-  //设置close按钮
+  //设置删除按钮
   // 点击编辑按钮触发事件
-  if(CellState == NormalState)
-  {
+  if(CellState == NormalState){
     //正常情况下，所有删除按钮都隐藏；
-    cell.deleteButton.hidden = YES;
-  }
-  else{
-    //编辑情况下：
+    cell.deleteButton.hidden = true;
+  }else{
+    //可删除情况下；
+    //找到某个具体的section；
     SectionModel *section = self.dataSectionArray[indexPath.section];
-    if (indexPath.row != section.cellArray.count - 1)
-    {
-      cell.deleteButton.hidden = NO;
-    }
-    else
-    {
-      //最后一个是添加按钮，所以隐藏右上角的删除按钮；
-      cell.deleteButton.hidden = YES;
+    //cell数组中的最后一个是添加按钮，不能删除；
+    if (indexPath.row == section.cellArray.count - 1){
+      cell.deleteButton.hidden = true;
+    }else{
+      cell.deleteButton.hidden = false;
     }
   }
   [cell.deleteButton addTarget:self action:@selector(deleteCellButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -166,25 +162,31 @@ NS_ENUM(NSInteger,CellState){
 - (NSMutableArray *)dataSectionArray{
   if (!_dataSectionArray){
     
-    NSLog(@"1111111111111111");
-    
+    //CollectionView有一个Section数组；
     _dataSectionArray = [[NSMutableArray alloc] initWithCapacity:2];//1个；
     
     for (int i = 0; i < 2; i++) {
+      //默认初始有两个Section；
       _dataCellArray = [[NSMutableArray alloc] initWithCapacity:6];//2个；
       
       for (int j = 0; j < 6; j++) {
+        //默认一个section中有6个cell；
+        //初始化每一个cell；
         CellModel *cellModel = [[CellModel alloc] init];
         cellModel.cellImage = self.cellImageArr[j];
         cellModel.cellDesc = self.cellDescArr[j];
         
+        //添加到cell数组中；
         [_dataCellArray addObject:cellModel];
       }//for;
       
+      //初始化section；
       SectionModel *sectionModel = [[SectionModel alloc] init];
       sectionModel.sectionName = self.headerArray[i];
+      //把上面生成的cell数组加入到section数组中；
       sectionModel.cellArray = _dataCellArray;
       
+      //增加一个section；
       [_dataSectionArray addObject:sectionModel];
     }//for;
     
@@ -231,15 +233,18 @@ NS_ENUM(NSInteger,CellState){
   if ((indexPath.row == sec.cellArray.count - 1)) {
     NSLog(@"点击最后一个cell，执行添加操作");
     
-    
+    //初始化一个新的cell模型；
     CellModel *cel = [[CellModel alloc] init];
     cel.cellImage = @"1";
     cel.cellDesc = @"再来一个";
 
+    //获取当前的cell数组；
     self.dataCellArray = sec.cellArray;
     
+    //把新创建的cell插入到最后一个之前；
     [self.dataCellArray insertObject:cel atIndex:self.dataCellArray.count - 1];
     
+    //更新UI；
     [self.collectionView reloadData];
     
   }else{
@@ -300,16 +305,20 @@ NS_ENUM(NSInteger,CellState){
 
 - (IBAction)editButtonPressed:(id)sender {
   
+  //从正常状态变为可删除状态；
   if (CellState == NormalState) {
     
     CellState = DeleteState;
     self.editButton.titleLabel.text = @"完成";
     
-    for(CollectionViewCell *cell in self.collectionView.visibleCells)
-    {
+    //循环遍历整个CollectionView；
+    for(CollectionViewCell *cell in self.collectionView.visibleCells){
+      
       NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+      //找到某一个具体的section；
       SectionModel *section = self.dataSectionArray[indexPath.section];
       
+      //除最后一个cell外都显示删除按钮；
       if (indexPath.row != section.cellArray.count - 1){
         [cell.deleteButton setHidden:false];
       }
@@ -326,8 +335,7 @@ NS_ENUM(NSInteger,CellState){
   
 }
 
-- (void)deleteCellButtonPressed: (id)sender
-{
+- (void)deleteCellButtonPressed: (id)sender{
   CollectionViewCell *cell = (CollectionViewCell *)[sender superview];//获取cell
   
   NSIndexPath *indexpath = [self.collectionView indexPathForCell:cell];//获取cell对应的indexpath;
@@ -337,7 +345,6 @@ NS_ENUM(NSInteger,CellState){
   [sec.cellArray removeObjectAtIndex:indexpath.row];
   
   [self.collectionView reloadData];
-  
   
   NSLog(@"删除按钮，section:%ld ,   row: %ld",(long)indexpath.section,(long)indexpath.row);
 }
