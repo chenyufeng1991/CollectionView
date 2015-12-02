@@ -40,7 +40,11 @@ NS_ENUM(NSInteger,CellState){
 @property(strong,nonatomic) NSMutableArray *headerArray;
 
 @property (nonatomic,strong) SectionModel *section;
-@property (nonatomic,strong) NSMutableArray *dataSectionArray;//里面存放section对象，模型由SectionModel定义；
+
+//里面存放section对象，也就是section模型，模型由SectionModel定义；
+@property (nonatomic,strong) NSMutableArray *dataSectionArray;
+
+//里面存放cell对象，也就是cell模型，模型由CellModel定义；
 @property (nonatomic,strong) NSMutableArray *dataCellArray;
 
 @property(nonatomic,strong) NSMutableArray *cellImageArr;
@@ -64,6 +68,8 @@ NS_ENUM(NSInteger,CellState){
   //一开始是正常状态；
   CellState = NormalState;
   
+  [self createLongPressGesture];
+  
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -83,11 +89,11 @@ NS_ENUM(NSInteger,CellState){
   SectionModel *sec = [self.dataSectionArray objectAtIndex:indexPath.section];
   //找到Section中的cell数组中某个具体的cell；
   CellModel *cel = [sec.cellArray objectAtIndex:indexPath.row];
-
+  
   //取出数据；
   cell.imageView.image = [UIImage imageNamed:cel.cellImage];
   cell.descLabel.text = cel.cellDesc;
-
+  
   //设置删除按钮
   // 点击编辑按钮触发事件
   if(CellState == NormalState){
@@ -206,7 +212,7 @@ NS_ENUM(NSInteger,CellState){
 }
 
 - (NSMutableArray *)cellImageArr{
-
+  
   if (!_cellImageArr) {
     self.cellImageArr = [[NSMutableArray alloc] initWithObjects:@"0",@"1",@"2",@"3",@"4",@"5",nil];
   }
@@ -215,7 +221,7 @@ NS_ENUM(NSInteger,CellState){
 }
 
 - (NSMutableArray *)cellDescArr{
-
+  
   if (!_cellDescArr) {
     self.cellDescArr = [[NSMutableArray alloc] initWithObjects:@"第0个",@"第1个",@"第2个",@"第3个",@"第4个",@"添加",nil];
   }
@@ -237,7 +243,7 @@ NS_ENUM(NSInteger,CellState){
     CellModel *cel = [[CellModel alloc] init];
     cel.cellImage = @"1";
     cel.cellDesc = @"再来一个";
-
+    
     //获取当前的cell数组；
     self.dataCellArray = sec.cellArray;
     
@@ -283,6 +289,9 @@ NS_ENUM(NSInteger,CellState){
     SectionModel *sec = [[SectionModel alloc] init];
     sec.sectionName = envirnmentNameTextField.text;
     sec.cellArray = self.dataCellArray;
+    
+    
+    //增加一个section，就要加入到dataSectionArray中；
     [self.dataSectionArray addObject:sec];
     
     
@@ -347,6 +356,76 @@ NS_ENUM(NSInteger,CellState){
   [self.collectionView reloadData];
   
   NSLog(@"删除按钮，section:%ld ,   row: %ld",(long)indexpath.section,(long)indexpath.row);
+}
+
+
+#pragma mark - 创建长按手势
+- (void)createLongPressGesture{
+  
+  //创建长按手势监听
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(myHandleTableviewCellLongPressed:)];
+  longPress.minimumPressDuration = 1.0;
+  //将长按手势添加到需要实现长按操作的视图里
+  [self.collectionView addGestureRecognizer:longPress];
+}
+
+- (void) myHandleTableviewCellLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer {
+  
+  
+  CGPoint pointTouch = [gestureRecognizer locationInView:self.collectionView];
+  
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    NSLog(@"长按手势开始");
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:pointTouch];
+    if (indexPath == nil) {
+      NSLog(@"空");
+    }else{
+      UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入修改后的描述文字" preferredStyle:UIAlertControllerStyleAlert];
+      //以下方法就可以实现在提示框中输入文本；
+      [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *cellDescTextField = alertController.textFields.firstObject;
+        
+        NSString *cellDesc = cellDescTextField.text;
+        NSLog(@"输入的文字是：%@",cellDesc);
+        
+        
+        //找到当前操作的section；
+        SectionModel *section = [self.dataSectionArray objectAtIndex:indexPath.section];
+        //找到当前操作的cell；
+        CellModel *cell = [section.cellArray objectAtIndex:indexPath.row];
+        //修改该cell的描述文字；
+        cell.cellDesc = cellDesc;
+        
+        //确定当前的cell数组；
+        self.dataCellArray = section.cellArray;
+        //替换cell数组中的内容；
+        [self.dataCellArray replaceObjectAtIndex:indexPath.row withObject:cell];
+        //更新界面；
+        [self.collectionView reloadData];
+        
+        
+      }]];
+      
+      [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+      [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入Section名称";
+      }];
+      [self presentViewController:alertController animated:true completion:nil];
+
+      NSLog(@"Section = %ld,Row = %ld",(long)indexPath.section,(long)indexPath.row);
+      
+    }
+  }
+  if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+    NSLog(@"长按手势改变，发生长按拖拽动作执行该方法");
+  }
+  
+  if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+    NSLog(@"长按手势结束");
+  }
 }
 
 @end
