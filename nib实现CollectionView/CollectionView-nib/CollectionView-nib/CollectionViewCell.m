@@ -12,24 +12,18 @@
 
 @implementation CollectionViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame{
+
   self = [super initWithFrame:frame];
   if (self) {
-    
-
     //这里需要初始化ImageView；
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (UISCREEN_WIDTH - 80) / 3, (UISCREEN_WIDTH - 80) / 3)];
     [self addSubview:self.imageView];
     [self.imageView setUserInteractionEnabled:true];
-    
-    
+
     self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (UISCREEN_WIDTH - 80) / 3, (UISCREEN_WIDTH - 80) / 3, 20)];
     self.descLabel.textAlignment = NSTextAlignmentCenter;
-    
     [self addSubview:self.descLabel];
-    
-    
   }
   return self;
 }
