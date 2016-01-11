@@ -17,11 +17,11 @@
   self = [super initWithFrame:frame];
   if (self) {
     
-    self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 300, 20)];
+    self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, [[UIScreen mainScreen] bounds].size.width, 20)];
     self.title.textColor = [UIColor blackColor];
+    self.title.textAlignment = NSTextAlignmentCenter;
     
     [self addSubview:self.title];
-    
     
   }
   return self;

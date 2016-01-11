@@ -51,6 +51,8 @@ NS_ENUM(NSInteger,CellState){
 @property(nonatomic,strong) NSMutableArray *cellDescArr;
 
 
+@property(nonatomic,strong) CollectionReusableView *reusableView;
+
 @end
 
 @implementation SecondViewController
@@ -69,6 +71,17 @@ NS_ENUM(NSInteger,CellState){
   CellState = NormalState;
   
   [self createLongPressGesture];
+  
+  //并给这个头部增加长按事件，要求长按修改头部文字；
+  //创建长按手势监听
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
+                                             initWithTarget:self
+                                             action:@selector(sectionHeaderLongPressed:)];
+  longPress.minimumPressDuration = 1.0;
+  
+  //将长按手势添加到需要实现长按操作的视图里
+  [self.collectionView addGestureRecognizer:longPress];
+
   
 }
 
@@ -125,12 +138,15 @@ NS_ENUM(NSInteger,CellState){
 //加载头部标题；
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
   
-  CollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:indexPath];
+  self.reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header" forIndexPath:indexPath];
   
   //就打印出当前section的值；
-  view.title.text = [self.headerArray objectAtIndex:indexPath.section];
+  self.reusableView.title.text = [self.headerArray objectAtIndex:indexPath.section];
   
-  return view;
+  
+  
+  
+  return self.reusableView;
   
 }
 
@@ -365,13 +381,14 @@ NS_ENUM(NSInteger,CellState){
   //创建长按手势监听
   UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
                                              initWithTarget:self
-                                             action:@selector(myHandleTableviewCellLongPressed:)];
+                                             action:@selector(cellLongPressed:)];
   longPress.minimumPressDuration = 1.0;
   //将长按手势添加到需要实现长按操作的视图里
   [self.collectionView addGestureRecognizer:longPress];
 }
 
-- (void) myHandleTableviewCellLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer {
+#pragma mark - cell的长按处理事件
+- (void) cellLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer {
   
   
   CGPoint pointTouch = [gestureRecognizer locationInView:self.collectionView];
@@ -414,7 +431,7 @@ NS_ENUM(NSInteger,CellState){
         textField.placeholder = @"请输入Section名称";
       }];
       [self presentViewController:alertController animated:true completion:nil];
-
+      
       NSLog(@"Section = %ld,Row = %ld",(long)indexPath.section,(long)indexPath.row);
       
     }
@@ -426,6 +443,24 @@ NS_ENUM(NSInteger,CellState){
   if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
     NSLog(@"长按手势结束");
   }
+}
+
+#pragma mark - sectionHeader的长按处理事件
+- (void) sectionHeaderLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
+  
+  
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+  
+    
+    NSLog(@"11111111");
+    
+    
+  }
+  
+  if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+    
+  }
+  
 }
 
 @end

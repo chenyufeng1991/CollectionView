@@ -12,4 +12,6 @@
 
 @property(strong,nonatomic)UILabel *title;
 
+
+
 @end
